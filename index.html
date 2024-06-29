@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Firebase Realtime Database Example</title>
+  <style>
+    #p {
+      padding: 2px;
+      border: 1px solid black;
+      display: flex;
+      width: 100px;
+    }
+    #p1 {
+      background-color: #FF928B;
+      width: 20px;
+      height: 20px;
+    }
+    #p2 {
+      background-color: #FFAC81;
+      width: 20px;
+      height: 20px;
+    }
+    #p3 {
+      background-color: #FEC3A6;
+      width: 20px;
+      height: 20px;
+    }
+    #p4 {
+      background-color: #EFE9AE;
+      width: 20px;
+      height: 20px;
+    }
+    #p5 {
+      background-color: #CDEAC0;
+      width: 20px;
+      height: 20px;
+    }
+  </style>
+  <script src="https://www.gstatic.com/firebasejs/8.2.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.2.0/firebase-analytics.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.2.0/firebase-database.js"></script>
+  <script>
+    // Your web app's Firebase configuration
+    const firebaseConfig = {
+      apiKey: "AIzaSyAT0GDvmRyX0FywvP6J4x-BZ71XAIkTgXo",
+      authDomain: "the-moon-14.firebaseapp.com",
+      databaseURL: "https://the-moon-14-default-rtdb.firebaseio.com",
+      projectId: "the-moon-14",
+      storageBucket: "the-moon-14.appspot.com",
+      messagingSenderId: "625767152976",
+      appId: "1:625767152976:web:5b7e601c282b1e061d4055",
+      measurementId: "G-DB6FV44QT3"
+    };
+
+    // Initialize Firebase
+   // Initialize Firebase
+   const app = firebase.initializeApp(firebaseConfig);
+   var database = firebase.database();
+   const bka=[]
+   var c=''
+    var ref = firebase.database().ref('/box/');
+    ref.on("value", function (snapshot) {
+        const data = snapshot.val();
+        document.getElementById("tm").innerHTML=""
+        for (let key in data) {
+        if (data.hasOwnProperty(key)) {
+            console.log(data[key]);
+            alp=data[key].message
+            ais=data[key].id
+            
+            bka.push(ais)
+            if(bka[0]==ais){
+              c="cepatttt"
+            }else if(ais==last){
+              c="unikk"
+            }else{
+              c='c'
+            }
+            document.getElementById("tm").innerHTML+="<p>"+alp+'</p>'+ais+"V"+c
+        }
+      }
+    }, function (error) {
+        console.log("Error: " + error.code);
+      });
+
+   
+    function send(pesan,date=new Date().toJSON()){
+      firebase.database().ref('/box/').push({
+        message : pesan,
+        id : new Date().getTime(),
+        date : date.slice(0,10),
+        time : date.slice(11,23)
+      });}
+
+    function get_data(){
+      var saran1=document.getElementById("saran").value
+      if(saran1==''){
+
+      }else{
+      send(saran1)
+      document.getElementById("saran").value=""
+      //window.location.href="main.html";
+    }}
+</script>
+</head>
+<body>
+  <div id="p">
+    <div id="p1"></div>
+    <div id="p2"></div>
+    <div id="p3"></div>
+    <div id="p4"></div>
+    <div id="p5"></div>
+  </div>
+  <input type="text" id="saran" placeholder="...">
+  <button onclick="get_data()">click me</button>
+<div id="tm">
+
+</div>
+</body>
+</html>
